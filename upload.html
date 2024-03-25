@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Gradient background */
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 90%; /* Adjusted to take more width */
+            max-width: none; /* Removes the max-width restriction */
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        input[type="file"],
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: calc(100% - 16px); /* Adjusted to account for padding */
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <h1>Upload Your Property</h1>
+        <label for="propertyImage">Upload Image:</label>
+        <input type="file" id="propertyImage" name="propertyImage" accept="image/*" required>
+        
+        <label for="propertyName">Property Name:</label>
+        <input type="text" id="propertyName" name="propertyName" placeholder="Enter property name" required>
+        
+        <label for="propertyDescription">Property Description:</label>
+        <textarea id="propertyDescription" name="propertyDescription" rows="4" placeholder="Describe the property" required></textarea>
+        
+        <label for="propertyPrice">Asking Price:</label>
+        <input type="number" id="propertyPrice" name="propertyPrice" placeholder="Enter asking price" required>
+        
+        <button type="submit">Upload Property</button>
+    </form>
+</body>
+</html>
