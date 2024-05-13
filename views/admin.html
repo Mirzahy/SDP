@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .buttons, .user-list {
+            margin: 20px 0;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .user-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="buttons">
+            <button id="seeUsers">See Users</button>
+            <button id="deleteUsers">Delete Users</button>
+            <button id="addAgents">Add Agents</button>
+            <button id="seeAgents">See Agents</button>
+            <button id="deleteAgents">Delete Agents</button>
+        </div>
+        <div class="user-list" style="display: none;">
+            <!-- Users will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#seeUsers").click(function(){
+                // Check if the user list is already visible
+                if ($(".user-list").is(":visible")) {
+                    $(".user-list").empty(); // Clear the list
+                    $(".user-list").hide(); // Hide the list
+                } else {
+                    // Send AJAX request to fetch users if the list is not visible
+                    $.ajax({
+                        url: "http://localhost/Web/backend/get_users.php", 
+                        type: "GET",
+                        dataType: "json",
+                        success: function(response) {
+                            var userList = $(".user-list");
+                            userList.empty(); // Clear the previous list
+                            if (response.data && response.data.length > 0) {
+                                response.data.forEach(function(user) {
+                                    userList.append('<div class="user-item">' + user.username + ' - ' + user.email + '</div>');
+                                });
+                            } else {
+                                userList.append('<div class="user-item">No users found.</div>');
+                            }
+                            userList.show(); // Show the list
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert("Error fetching users. Please try again.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
