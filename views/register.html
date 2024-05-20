@@ -60,9 +60,10 @@
               };
 
               // Send AJAX request
+              console.log("ovdje je prije ajaxa");
               $.ajax({
-                  url: "http://localhost/Web-Project-2024/backend/add_user.php", 
-                  type: "POST",
+                  url: "http://localhost/SDP/backend/users/", 
+                  type: "GET",
                   data: formData,
                   success: function(response) {
                       

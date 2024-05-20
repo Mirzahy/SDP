@@ -75,13 +75,17 @@
 
   /**
    * Preloader
-   */
-  let preloader = select('#preloader');
-  if (preloader) {
-    window.addEventListener('load', () => {
-      preloader.remove()
-    });
-  }
+   * */
+ 
+  // let preloader = select('#preloader');
+  // if (preloader) {
+  //   window.addEventListener('load', () => {
+  //     preloader.remove()
+  //   });
+  //   console.log("Preloadoeeer");
+  // }
+   
+   
 
   /**
    * Search window open/close
@@ -101,7 +105,8 @@
 
   /**
    * Intro Carousel
-   */
+ 
+  
   new Swiper('.intro-carousel', {
     speed: 600,
     loop: true,
@@ -116,10 +121,11 @@
       clickable: true
     }
   });
-
+  
+  */
   /**
    * Property carousel
-   */
+  
   new Swiper('#property-carousel', {
     speed: 600,
     loop: true,
@@ -145,10 +151,11 @@
       }
     }
   });
+   */
 
   /**
    * News carousel
-   */
+  
   new Swiper('#news-carousel', {
     speed: 600,
     loop: true,
@@ -174,10 +181,11 @@
       }
     }
   });
+   */
 
   /**
    * Testimonial carousel
-   */
+ 
   new Swiper('#testimonial-carousel', {
     speed: 600,
     loop: true,
@@ -192,10 +200,10 @@
       clickable: true
     }
   });
-
+  */
   /**
    * Property Single carousel
-   */
+
   new Swiper('#property-single-carousel', {
     speed: 600,
     loop: true,
@@ -209,5 +217,6 @@
       clickable: true
     }
   });
+     */
 
 })()

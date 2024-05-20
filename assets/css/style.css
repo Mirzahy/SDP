@@ -196,6 +196,7 @@ a:hover {
     width: 33.333%;
   }
 }
+ 
 
 .list-a li:before {
   content: "";
@@ -509,7 +510,7 @@ a:hover {
   opacity: 1;
 }
 
-/* Prelaoder */
+/* Prelaoder
 #preloader {
   position: fixed;
   top: 0;
@@ -519,9 +520,9 @@ a:hover {
   z-index: 9999;
   overflow: hidden;
   background: #fff;
-}
+} */
 
-#preloader:before {
+/* #preloader:before {
   content: "";
   position: fixed;
   top: calc(50% - 30px);
@@ -532,9 +533,9 @@ a:hover {
   width: 60px;
   height: 60px;
   animation: animate-preloader 1s linear infinite;
-}
+} */
 
-@keyframes animate-preloader {
+/* @keyframes animate-preloader {
   0% {
     transform: rotate(0deg);
   }
@@ -542,7 +543,7 @@ a:hover {
   100% {
     transform: rotate(360deg);
   }
-}
+} */
 
 /*======================================
 //--//-->   BUTTON
@@ -2066,6 +2067,11 @@ a:hover {
   text-align: center;
   padding: 15px;
   font-weight: 600;
+}
+
+.login {
+  color: red;
+  border-radius: 15px;
 }
 
 .php-email-form .loading {
