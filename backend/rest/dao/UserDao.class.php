@@ -54,11 +54,10 @@ class UserDao extends BaseDao
 
     
     public function delete_user($user_id) {
-        $query = "DELETE FROM users WHERE idUsers = :user_id";
+        $query = "DELETE FROM users WHERE user_id = :user_id";
         $this->execute($query, [
             'user_id' => $user_id
         ]);
-        return true;
     }
     
 

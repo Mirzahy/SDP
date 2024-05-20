@@ -26,13 +26,9 @@ class UserService
     }
 
 
-    public function delete_user($user_id) {
-        $result = $this->user_dao->delete_user($user_id);
-        if ($result > 0) {
-            return ['success' => true, 'message' => 'User successfully deleted'];
-        } else {
-            return ['success' => false, 'message' => 'No user found with that ID, or deletion failed'];
-        }
+    public function delete_user($user_id)
+    {
+        $this->user_dao->delete_user($user_id);
     }
 
     public function get_user_by_id($user_id)

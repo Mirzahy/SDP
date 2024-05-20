@@ -26,10 +26,10 @@
             color: #333;
             text-align: center;
         }
-        .buttons, .user-list, .delete-form {
+        .buttons, .user-list {
             margin: 20px 0;
         }
-        button, input[type="text"], input[type="button"] {
+        button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
@@ -39,13 +39,8 @@
             border-radius: 4px;
             cursor: pointer;
         }
-        button:hover, input[type="button"]:hover {
+        button:hover {
             background-color: #0056b3;
-        }
-        input[type="text"] {
-            background-color: #fff;
-            color: #333;
-            margin-bottom: 10px; /* Add spacing between input and button */
         }
         .user-item {
             padding: 10px;
@@ -59,14 +54,10 @@
         <h1>Admin Dashboard</h1>
         <div class="buttons">
             <button id="seeUsers">See Users</button>
-            <button id="deleteUsersButton">Delete Users</button>
+            <button id="deleteUsers">Delete Users</button>
             <button id="addAgents">Add Agents</button>
             <button id="seeAgents">See Agents</button>
             <button id="deleteAgents">Delete Agents</button>
-        </div>
-        <div class="delete-form" style="display: none;">
-            <input type="text" id="userId" placeholder="Enter User ID to delete">
-            <button id="confirmDelete">Confirm Delete</button>
         </div>
         <div class="user-list" style="display: none;">
             <!-- Users will be displayed here -->
@@ -74,53 +65,29 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $("#deleteUsersButton").click(function() {
-                $(".delete-form").toggle(); // Toggle the visibility of the delete form
-            });
-
-            $("#confirmDelete").click(function() {
-                var userId = $("#userId").val(); // Get the user ID from the input field
-                if (userId) {
-                    $.ajax({
-                        url: "http://localhost/SDP/backend/users/" + userId,
-                        type: "DELETE",
-                        data: { id: userId },
-                        success: function(response) {
-                            var result = JSON.parse(response);
-                            alert(result.message || result.error);
-                            $("#userId").val(''); // Clear the input field after deletion
-                            $(".delete-form").hide(); // Optionally hide the form again
-                        },
-                        error: function(xhr) {
-                            alert("Error: " + xhr.responseText);
-                        }
-                    });
-                } else {
-                    alert("Please enter a user ID.");
-                }
-            });
-
-            $("#seeUsers").click(function() {
+        $(document).ready(function(){
+            $("#seeUsers").click(function(){
+                // Check if the user list is already visible
                 if ($(".user-list").is(":visible")) {
-                    $(".user-list").empty();
-                    $(".user-list").hide();
+                    $(".user-list").empty(); // Clear the list
+                    $(".user-list").hide(); // Hide the list
                 } else {
+                    // Send AJAX request to fetch users if the list is not visible
                     $.ajax({
-                        url: "http://localhost/SDP/backend/users/",
+                        url: "http://localhost/Web/backend/get_users.php", 
                         type: "GET",
                         dataType: "json",
                         success: function(response) {
                             var userList = $(".user-list");
-                            userList.empty();
+                            userList.empty(); // Clear the previous list
                             if (response.data && response.data.length > 0) {
                                 response.data.forEach(function(user) {
-                                    userList.append('<div class="user-item"> ' +user.idUsers + ' - ' + user.username + ' - ' + user.email + '</div>');
+                                    userList.append('<div class="user-item">' + user.username + ' - ' + user.email + '</div>');
                                 });
                             } else {
                                 userList.append('<div class="user-item">No users found.</div>');
                             }
-                            userList.show();
+                            userList.show(); // Show the list
                         },
                         error: function(xhr, status, error) {
                             console.error(xhr.responseText);
