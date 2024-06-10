@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Property Upload</title>
     <style>
-        body {
+      /*body{
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to right, #74ebd5, #acb6e5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -35,7 +34,8 @@
         }
         input[type="text"],
         input[type="number"],
-        textarea {
+        textarea,
+        input[type="file"] {
             width: calc(100% - 16px);
             padding: 8px;
             margin-bottom: 10px;
@@ -58,47 +58,89 @@
         }
         button:hover {
             background-color: #0056b3;
-        }
+        }*/
     </style>
-</head>
-<body>
+  </head>
+  <body class="uploadProperty">
     <form id="propertyForm">
-        <h1>Upload Your Property</h1>
-        
-        <label for="propertyName">Property Name:</label>
-        <input type="text" id="propertyName" name="Name" placeholder="Enter property name" required>
-        
-        <label for="propertyDescription">Property Description:</label>
-        <textarea id="propertyDescription" name="Description" rows="4" placeholder="Describe the property" required></textarea>
-        
-        <label for="propertyPrice">Asking Price:</label>
-        <input type="number" id="propertyPrice" name="Price" placeholder="Enter asking price" required>
-        
-        <button type="button" id="uploadBtn">Upload Property</button>
+      <h1>Upload Your Property</h1>
+
+      <label for="propertyName">Property Name:</label>
+      <input
+        type="text"
+        id="propertyName"
+        name="Name"
+        placeholder="Enter property name"
+        required
+      />
+
+      <label for="propertyDescription">Property Description:</label>
+      <textarea
+        id="propertyDescription"
+        name="Description"
+        rows="4"
+        placeholder="Describe the property"
+        required
+      ></textarea>
+
+      <label for="propertyPrice">Asking Price:</label>
+      <input
+        type="number"
+        id="propertyPrice"
+        name="Price"
+        placeholder="Enter asking price"
+        required
+      />
+
+      <label for="propertyImage">Upload Image:</label>
+      <input
+        type="file"
+        id="propertyImage"
+        name="Image"
+        accept="image/*"
+        required
+      />
+
+      <button type="button" id="uploadBtn">Upload Property</button>
     </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#uploadBtn").click(function() {
-                var data = {
-                    Name: $("#propertyName").val(),
-                    Description: $("#propertyDescription").val(),
-                    Price: $("#propertyPrice").val()
-                };
-                $.ajax({
-                    type: "POST",
-                    url: "http://localhost/Web-Project-2024/backend/add_property.php", 
-                    data: data,
-                    success: function(response) {
-                        alert("Property uploaded successfully!");
-                    },
-                    error: function() {
-                        alert("Error uploading property.");
-                    }
-                });
+      $(document).ready(function () {
+        $("#uploadBtn").click(function () {
+          var file = $("#propertyImage")[0].files[0];
+          var reader = new FileReader();
+
+          reader.onloadend = function () {
+            var base64String = reader.result
+              .replace("data:", "")
+              .replace(/^.+,/, "");
+            var data = {
+              Name: $("#propertyName").val(),
+              Description: $("#propertyDescription").val(),
+              Price: $("#propertyPrice").val(),
+              Image: base64String,
+            };
+
+            $.ajax({
+              type: "POST",
+              url: "http://localhost/Web-Project-2024/backend/properties",
+              data: JSON.stringify(data),
+              contentType: "application/json",
+              success: function (response) {
+                alert("Property uploaded successfully!");
+              },
+              error: function (xhr, status, error) {
+                console.error("Error status:", status);
+                console.error("Error details:", xhr.responseText);
+                alert("Error uploading property: " + xhr.responseText);
+              },
             });
+          };
+
+          reader.readAsDataURL(file);
         });
+      });
     </script>
-</body>
+  </body>
 </html>
