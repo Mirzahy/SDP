@@ -1,0 +1,7 @@
+{
+    "require": {
+        "firebase/php-jwt": "^6.10",
+        "flightphp/core": "^3.9",
+        "mikecao/flight": "*"
+    }
+}

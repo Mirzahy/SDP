@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .buttons, .user-list, .agent-list, .delete-form, .message-box, .add-agent-form {
+            margin: 20px 0;
+        }
+        button, input[type="text"], input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover, input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            background-color: #fff;
+            color: #333;
+            margin-bottom: 10px; /* Add spacing between input and button */
+        }
+        .user-item, .agent-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .message-box {
+            display: none;
+            padding: 10px;
+            border: 1px solid #007bff;
+            background-color: #e7f3ff;
+            color: #007bff;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .add-agent-form, .delete-agent-form {
+            display: none;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <div class="buttons">
+            <button id="seeUsers">See Users</button>
+            <button id="deleteUsersButton">Delete Users</button>
+            <button id="addAgents">Add Agents</button>
+            <button id="seeAgents">See Agents</button>
+            <button id="deleteAgentsButton">Delete Agents</button>
+        </div>
+        <div class="delete-form" id="deleteUserForm" style="display: none;">
+            <input type="text" id="userId" placeholder="Enter User ID to delete">
+            <button id="confirmDeleteUser">Confirm Delete User</button>
+        </div>
+        <div class="delete-form" id="deleteAgentForm" style="display: none;">
+            <input type="text" id="agentId" placeholder="Enter Agent ID to delete">
+            <button id="confirmDeleteAgent">Confirm Delete Agent</button>
+        </div>
+        <div class="user-list" style="display: none;">
+            <!-- Users will be displayed here -->
+        </div>
+        <div class="agent-list" style="display: none;">
+            <!-- Agents will be displayed here -->
+        </div>
+        <div class="message-box" id="messageBox"></div>
+        <div class="add-agent-form">
+            <input type="text" id="agentName" placeholder="Enter Agent Name">
+            <input type="text" id="agentSurname" placeholder="Enter Agent Surname">
+            <input type="text" id="agentEmail" placeholder="Enter Agent Email">
+            <button id="confirmAddAgent">Add Agent</button>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#deleteUsersButton").click(function() {
+                $("#deleteUserForm").toggle(); // Toggle the visibility of the delete form
+            });
+
+            $("#confirmDeleteUser").click(function() {
+                var userId = $("#userId").val(); // Get the user ID from the input field
+                if (userId) {
+                    $.ajax({
+                        url: "http://localhost/Web-Project-2024/backend/users/" + userId,
+                        type: "DELETE",
+                        success: function(response) {
+                            var messageBox = $("#messageBox");
+                            messageBox.text("User deleted successfully!");
+                            messageBox.show();
+                            setTimeout(function() {
+                                messageBox.hide();
+                            }, 3000); // Hide the message after 3 seconds
+                            $("#userId").val(''); // Clear the input field after deletion
+                            $("#deleteUserForm").hide(); // Optionally hide the form again
+                        },
+                        error: function(xhr) {
+                            alert("Error: " + xhr.responseText);
+                        }
+                    });
+                } else {
+                    alert("Please enter a user ID.");
+                }
+            });
+
+            $("#seeUsers").click(function() {
+                if ($(".user-list").is(":visible")) {
+                    $(".user-list").empty();
+                    $(".user-list").hide();
+                } else {
+                    $.ajax({
+                        url: "http://localhost/Web-Project-2024/backend/users/",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(response) {
+                            var userList = $(".user-list");
+                            userList.empty();
+                            if (response.data && response.data.length > 0) {
+                                response.data.forEach(function(user) {
+                                    userList.append('<div class="user-item"> ' + user.idUsers + ' - ' + user.username + ' - ' + user.email + '</div>');
+                                });
+                            } else {
+                                userList.append('<div class="user-item">No users found.</div>');
+                            }
+                            userList.show();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert("Error fetching users. Please try again.");
+                        }
+                    });
+                }
+            });
+
+            $("#addAgents").click(function() {
+                $(".add-agent-form").toggle(); // Toggle the visibility of the add agent form
+            });
+
+            $("#confirmAddAgent").click(function() {
+                var agentName = $("#agentName").val();
+                var agentSurname = $("#agentSurname").val();
+                var agentEmail = $("#agentEmail").val();
+
+                if (agentName && agentSurname && agentEmail) {
+                    var agentData = {
+                        name: agentName,
+                        surname: agentSurname,
+                        email: agentEmail
+                    };
+
+                    $.ajax({
+                        url: "http://localhost/Web-Project-2024/backend/agents/",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(agentData),
+                        success: function(response) {
+                            var messageBox = $("#messageBox");
+                            messageBox.text("Agent added successfully!");
+                            messageBox.show();
+                            setTimeout(function() {
+                                messageBox.hide();
+                            }, 3000);
+                            $("#agentName").val('');
+                            $("#agentSurname").val('');
+                            $("#agentEmail").val('');
+                            $(".add-agent-form").hide();
+                        },
+                        error: function(xhr) {
+                            alert("Error: " + xhr.responseText);
+                        }
+                    });
+                } else {
+                    alert("Please fill all fields.");
+                }
+            });
+
+            $("#deleteAgentsButton").click(function() {
+                $("#deleteAgentForm").toggle(); // Toggle the visibility of the delete form
+            });
+
+            $("#confirmDeleteAgent").click(function() {
+                var agentId = $("#agentId").val(); // Get the agent ID from the input field
+                if (agentId) {
+                    $.ajax({
+                        url: "http://localhost/Web-Project-2024/backend/agents/" + agentId,
+                        type: "DELETE",
+                        success: function(response) {
+                            var messageBox = $("#messageBox");
+                            messageBox.text("Agent deleted successfully!");
+                            messageBox.show();
+                            setTimeout(function() {
+                                messageBox.hide();
+                            }, 3000); // Hide the message after 3 seconds
+                            $("#agentId").val(''); // Clear the input field after deletion
+                            $("#deleteAgentForm").hide(); // Optionally hide the form again
+                        },
+                        error: function(xhr) {
+                            alert("Error: " + xhr.responseText);
+                        }
+                    });
+                } else {
+                    alert("Please enter an agent ID.");
+                }
+            });
+
+            $("#seeAgents").click(function() {
+                if ($(".agent-list").is(":visible")) {
+                    $(".agent-list").empty();
+                    $(".agent-list").hide();
+                } else {
+                    $.ajax({
+                        url: "http://localhost/Web-Project-2024/backend/agents/",
+                        type: "GET",
+                        dataType: "json",
+                        success: function(response) {
+                            var agentList = $(".agent-list");
+                            agentList.empty();
+                            if (response.data && response.data.length > 0) {
+                                response.data.forEach(function(agent) {
+                                    agentList.append('<div class="agent-item"> ' + agent.idagents + ' - ' + agent.name + ' - ' + agent.surname + ' - ' + agent.email + '</div>');
+                                });
+                            } else {
+                                agentList.append('<div class="agent-item">No agents found.</div>');
+                            }
+                            agentList.show();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert("Error fetching agents. Please try again.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

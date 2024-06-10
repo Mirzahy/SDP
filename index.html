@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>EstateAgency Bootstrap Template - Simplified</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
+      rel="stylesheet"
+    />
+
+    <script src="assets/js/jquery.min.js"></script>
+
+    <script src="assets/js/jquery.spapp.js"></script>
+    <script src="assets/js/jquery.spapp.min.js"></script>
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/spapp.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- ======= Header/Navbar ======= -->
+    <nav
+      class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top"
+      id="vrh"
+    >
+      <div class="container">
+        <button
+          class="navbar-toggler collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarDefault"
+          aria-controls="navbarDefault"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <a class="navbar-brand text-brand" href="#home"
+          >Web <span class="color-b">Marketplace</span></a
+        >
+        <div
+          class="navbar-collapse collapse justify-content-center"
+          id="navbarDefault"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#property-grid">Property</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#upload">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#login" class="login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#admin" class="Admin">Admin</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Header/Navbar -->
+
+    <main id="spapp" role="main">
+      <section id="home" data-load="homepage.html"></section>
+      <section id="about" data-load="about.html"></section>
+      <section id="property-grid" data-load="property-grid.html"></section>
+      <section id="upload" data-load="upload.html"></section>
+      <section id="login" data-load="LOGIN.html"></section>
+      <section id="single" data-load="property-single.html"></section>
+      <section id="register" data-load="register.html"></section>
+      <section id="admin" data-load="admin.html"></section>
+    </main>
+
+    <script>
+      $(document).ready(function () {
+        // Function to check URL hash and hide navbar
+        function checkHashAndHideNavbar() {
+          var hash = window.location.hash;
+          if (hash === "#login" || hash === "#register") {
+            $("#vrh").hide();
+          } else {
+            $("#vrh").show();
+          }
+        }
+
+        // Check the hash on page load
+        checkHashAndHideNavbar();
+
+        // Optionally, you can also check the hash when the hash changes
+        $(window).on("hashchange", function () {
+          checkHashAndHideNavbar();
+        });
+
+        // Hide the navbar if the button is clicked and the hash changes
+        $(".login, .register").on("click", function () {
+          checkHashAndHideNavbar();
+        });
+      });
+    </script>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+
+    <script>
+      let app = $.spapp({
+        defaultView: "home",
+        templateDir: "./views/",
+      });
+
+      app.route({
+        view: "home",
+        load: "homepage.html",
+        onCreate: function () {},
+        onReady: function () {},
+      });
+
+      app.run();
+    </script>
+  </body>
+</html>

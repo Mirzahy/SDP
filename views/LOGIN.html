@@ -1,0 +1,140 @@
+<!-- Directly set the action to index.html 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form | Estate Marketplace</title>
+    <link rel="stylesheet" href="LOGIN/login.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="background">
+    <div class="wrapper">
+      <form action="index.html">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" placeholder="Username" required />
+          <i class="bx bxs-user"></i>
+        </div>
+        <div class="input-box">
+          <input type="password" placeholder="Password" required />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="remember-forgot">
+          <label><input type="checkbox" />Remember Me</label>
+          <a href="#">Forgot Password</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="register-link">
+          <p>Dont have an account? <a href="#register">Register</a></p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#loginForm").submit(function (event) {
+          event.preventDefault();
+
+          const email = $("#email").val();
+          const password = $("#password").val();
+
+          $.ajax({
+            url: "http://localhost/Web-Project-2024/backend/auth/login",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ email: email, password: password }),
+            success: function (response) {
+              if (response.token) {
+                window.localStorage.setItem("user", JSON.stringify(response));
+
+                console.log("Login successful", response);
+                window.location.href = "index.html";
+              } else {
+                console.log("Login failed: " + response.message);
+              }
+            },
+            error: function (xhr) {
+              console.log("Login failed: " + xhr.responseText);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form | Estate Marketplace</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="login-background">
+      <div class="login-wrapper">
+        <form action="index.html">
+          <h1 style="color: #fff">Login</h1>
+          <div class="input-box">
+            <input type="text" placeholder="Username" required />
+            <i class="bx bxs-user"></i>
+          </div>
+          <div class="input-box">
+            <input type="password" placeholder="Password" required />
+            <i class="bx bxs-lock-alt"></i>
+          </div>
+          <div class="remember-forgot">
+            <label><input type="checkbox" />Remember Me</label>
+            <a href="#">Forgot Password</a>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <div class="register-link">
+            <p>Don't have an account? <a href="#register">Register</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#loginForm").submit(function (event) {
+          event.preventDefault();
+
+          const email = $("#email").val();
+          const password = $("#password").val();
+
+          $.ajax({
+            url: "http://localhost/Web-Project-2024/backend/auth/login",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ email: email, password: password }),
+            success: function (response) {
+              if (response.token) {
+                window.localStorage.setItem("user", JSON.stringify(response));
+                console.log("Login successful", response);
+                window.location.href = "index.html";
+              } else {
+                console.log("Login failed: " + response.message);
+              }
+            },
+            error: function (xhr) {
+              console.log("Login failed: " + xhr.responseText);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
